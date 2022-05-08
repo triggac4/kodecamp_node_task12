@@ -2,8 +2,19 @@ const ProductModel=require('../model/product')
 const CustomError=require('../error/customError')
 
 const getAllProduct = async (req, res) => {
-    const result=await ProductModel.find({});
+    const {category,name,sortBy="price"}=req.query;
+    const queryBy={}
+    if(category){
+        queryBy.category=category
+    }
+    if(name){
+        queryBy.name={$regex:name,$options:'i'}
+    }
+
+    const result=await ProductModel.find(queryBy).sort({[sortBy]:1});
     res.json({status:'success',data:result});
+
+
 }
 const createProduct = async (req, res) => {
     const {name,price,description,category} = req.body;
