@@ -4,7 +4,8 @@ const express = require("express");
 const connect = require("./database/database");
 const invalidRoute = require("./middleware/invalidRoute");
 const errorHandler = require("./middleware/errorHandler");
-const router=require('./router/product')
+const productRoute=require('./router/product');
+const userRoute=require('./router/user');
 const app = express();
 
 app.use(express.json());
@@ -13,12 +14,13 @@ app.get("/", (req, res) => {
 });
 
 
-app.use('/api/v1/product',router)
+app.use('/api/v1/product',productRoute);
+app.use('/api/v1/user',userRoute);
 app.use([invalidRoute, errorHandler]);
 
 
 
-const PORT = process.env.PORT ?? 3000;
+const PORT = process.env.PORT || 3000;
 const start = async () => {
   try {
     await connect(process.env.MONGO_URL);
