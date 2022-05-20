@@ -50,6 +50,7 @@ const signIn = async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24,
+    secure: true,
   });
 
   result.refreshToken = refreshToken;
@@ -85,6 +86,7 @@ const signUp = async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     maxAge: 1000 * 60 * 60 * 24,
+    secure: true,
   });
 
   result.refreshToken = refreshToken;
