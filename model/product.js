@@ -9,6 +9,7 @@ productSchema=mongoose.Schema({
         type:[String ,"invalid data"],
         required:true
     },
+    
     category:{
         type:[String ,"invalid category"],
         enum:["electronics","books","clothes","food","others"],

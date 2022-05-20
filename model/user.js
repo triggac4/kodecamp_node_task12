@@ -21,25 +21,17 @@ const userSchema = mongoose.Schema(
     password: {
       type: String,
       required: true,
+      maxlength: 1024,
+      minlength:6
     },
+    refreshToken:{
+        type:String,
+        default:""
+    }
   },
   { timestamps: true }
 );
 
-userSchema.pre("save", async function (next) {
-  try {
-    if (this.password) {
-      const salt = await bcrypt.genSalt(10);
-      this.password =await bcrypt.hash(this.password, salt);
-      next();
-    }
-    else{
-        throw new Error("Password is required");
-    }
-  } catch (err) {
-    next(err);
-  }
-});
 
 userSchema.methods.validatePassword = async function (password) {
   return await bcrypt.compare(password, this.password);
@@ -48,12 +40,12 @@ userSchema.methods.validatePassword = async function (password) {
 userSchema.methods.generateToken = async function (
   {firstName,
   lastName,
-  email,_id}
+  email,_id},secret,expiresIn
 ) {
   const token = JWT.sign(
     { firstName, lastName, email, _id },
-    process.env.JWT_SECRET,
-    { expiresIn: "30d" }
+    secret,
+    { expiresIn: expiresIn }
   );
   return token;
 };
